@@ -62,6 +62,20 @@ A curated collection of structured skills that guide Claude through complex deve
 
 ---
 
+### morning-paper-generator
+**Use this when:** Someone wants to start a new Julia Cameron-style morning pages session and needs a dated markdown entry with a fresh prompt.
+
+- **Phase 1:** Clarify the writer’s focus, mood, and desired structure; review existing entries in `morning-papers/`.
+- **Phase 2:** Choose or craft a reflective prompt and outline the sections for today’s entry.
+- **Phase 3:** Ensure `morning-papers/` exists, create `YYYY-MM-DD.md`, and seed it with the prompt plus supportive guidance.
+- **Phase 4:** Offer warm handoff steps (timers, reminders) and summarize the generated file for the writer.
+
+**Output:** Markdown file at `morning-papers/YYYY-MM-DD.md` ready for immediate journaling.
+
+**Documentation:** See `skills/morning-paper-generator/SKILL.md`
+
+---
+
 ### implementation-plan-creator
 **Use this when:** Starting development on a new feature or user-facing functionality that needs a written implementation plan.
 
@@ -124,10 +138,13 @@ Each skill file contains:
 │   ├── bash-script-generator/
 │   │   ├── LICENSE.txt
 │   │   └── SKILL.md
-│   └── implementation-plan-creator/
+│   ├── implementation-plan-creator/
+│   │   ├── LICENSE.txt
+│   │   ├── references/
+│   │   ├── scripts/
+│   │   └── SKILL.md
+│   └── morning-paper-generator/
 │       ├── LICENSE.txt
-│       ├── references/
-│       ├── scripts/
 │       └── SKILL.md
 └── .claude/
     └── settings.local.json          # Local permissions configuration
