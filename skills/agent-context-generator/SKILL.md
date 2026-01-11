@@ -26,8 +26,10 @@ metadata:
    - Use `find` alternative (`glob` or repo tree) to discover current files. Determine scope inheritance so you can update or extend instead of duplicating.
 2. **Read Core Docs**
    - Skim `README.md`, `CONTRIBUTING.md`, and other onboarding docs for project philosophy, setup, and workflows.
+   - If `docs/` or `documentation/` exists, scan for architectural or process references worth surfacing.
 3. **Survey Project Layout**
    - Note primary directories, languages, build targets, and ownership (e.g., "`src/ui` maintained by Frontend team").
+   - Check for `plans/`, `docs/`, or other knowledge directories. Flag must-read files (ADR indexes, architecture overviews, runbooks) to reference later in AGENTS.md.
 4. **Build a Git-aware Tree**
    - Use the `tree` command with the `--gitignore` flag (tree ≥ 2.0) so ignored paths stay hidden: `tree --gitignore -a -L 3 > tmp/tree.txt`.
    - If your `tree` build lacks `--gitignore`, run `tree -a -L 3 --prune` and manually prune any ignored directories noted in `.gitignore`, or install an updated version via your package manager.
@@ -35,15 +37,17 @@ metadata:
 5. **Identify Automation Runners**
    - If `Justfile` exists, run `just --list` (or `just --list --unsorted` for extra notes).
    - If `Makefile` exists (and `just` does not), run `make help` or inspect phony targets for canonical tasks.
-   - Record which commands are recommended for linting, testing, building, syncing data, etc.
+   - Record which commands are recommended for linting, testing, building, syncing data, etc. Link the definitive task names you surface in your notes for inclusion later.
 6. **Catalog Tooling & Environment**
    - List required runtimes, package managers, env vars, secrets handling, and local services.
+   - Note down any `.env.example`, `config/`, or secrets documentation that agents must review.
 7. **Clarify Testing & Quality Gates**
    - Identify test suites, coverage expectations, linting, formatting, and CI workflows.
 8. **Resolve Ambiguities Early**
    - Whenever conventions, ownership, or workflows seem unclear, prompt the developer with focused questions before drafting the guide.
+   - Ask explicitly whether existing `plans/` or documentation directories are authoritative or stale, and clarify what canon to reference.
 
-> **Outcome:** A structured notes list describing layout, tooling, commands, testing, release process, pending questions, and documentation update expectations.
+> **Outcome:** A structured notes list describing layout, tooling, commands, testing, release process, documentation references, pending questions, and update expectations.
 
 ---
 
@@ -60,7 +64,7 @@ Follow this opinionated order to keep files consistent and scannable:
 8. **Documentation Duties** — When to update `README.md`, architecture diagrams, or other docs.
 9. **Finish the Task** — Mandatory wrap-up checklist for every agent task.
 
-For deeper directories (e.g., `services/api/`), include a "Scope" note at the top clarifying inheritance from parent AGENTS instructions.
+For deeper directories (e.g., `services/api/`), include a "Scope" note at the top clarifying inheritance from parent AGENTS instructions. Always confirm with the developer before drafting new per-directory AGENTS files so you do not duplicate existing guidance or create unnecessary overhead.
 
 ---
 
@@ -111,12 +115,38 @@ Use the template below and adapt each section to the project:
 - [ ] Summarize changes in conventional commit format (e.g., `feat: ...`, `fix: ...`)
 ```
 
+### Subdirectory Template (Use Only with Developer Approval)
+```markdown
+# <Directory Name> Agent Guide
+
+> Scope: ./path/to/directory (inherits root AGENTS.md unless noted)
+
+## Purpose
+- What lives here
+- Who owns it (team/contact)
+
+## Key Files
+- `file_or_folder/` — why it matters
+
+## Common Tasks
+- `just <task>` / `make <target>` / command snippets scoped to this directory
+
+## Testing & Quality
+- Specific tests, linters, or data fixtures for this directory
+
+## Hand-off Notes
+- Docs or runbooks to reference
+- Open questions captured during discovery
+```
+Only create these per-directory guides after confirming with the developer which areas need dedicated context and what information should be emphasized.
+
 **Writing Notes:**
 - Keep language direct and actionable. Agents should follow commands verbatim.
 - Mention the preferred order of operations (e.g., "Always run `just format` before opening a PR").
 - When referencing scripts, include relative paths so agents can jump quickly (e.g., ``scripts/bootstrap.sh``).
 - Incorporate a trimmed `tree --gitignore` snapshot (or link to the saved artifact) so readers grasp layout quickly.
-- Call out any unanswered questions as action items and reach back to the developer for clarification before finalizing.
+- In the Repository Tour, highlight where `plans/`, `docs/`, design docs, or ADRs live if present.
+- Call out any unanswered questions as action items, and confirm with the developer before creating any per-directory AGENTS overlays.
 - If the project mixes languages/platforms, add subsections per component but keep global guidance first.
 
 ---
@@ -126,6 +156,7 @@ Use the template below and adapt each section to the project:
    - Does the file respect AGENTS scope rules? (Mention inheritance or overrides.)
    - Are all critical commands documented, especially automation entry points?
    - Is the README update expectation explicit?
+   - Did you obtain developer approval before adding any per-directory AGENTS files, and is that approval reflected in the write-up?
    - Does the "Finish the Task" checklist include the conventional commit summary reminder?
 2. **Formatting**
    - Ensure headings use Title Case, commands are wrapped in backticks, and lists are concise.
