@@ -26,31 +26,53 @@ A curated collection of structured skills that guide Claude through complex deve
    ```
    Shows which skills are currently deployed.
 
+4. **Capture a structure snapshot (optional but recommended):**
+   ```bash
+   tree --gitignore -a -L 3
+   ```
+   Regenerate this whenever the repository layout changes and update `AGENTS.md` as needed.
+
 ## Available Skills
 
-### 1. Implementation Plan Creator
-**Use this when:** Starting development on a new feature or user-facing functionality.
+### agent-context-generator
+**Use this when:** A repository needs a clear `AGENTS.md` or the existing guidance is out of date.
 
-Create detailed feature implementation plans before coding begins. The skill guides you through:
+- **Phase 1:** Audit the repo (README, automation, testing) and generate a `.gitignore`-aware tree snapshot.
+- **Phase 2:** Plan the opinionated AGENTS structure (Quick Facts → Repository Tour → Tooling → Tasks → Testing → Workflow → Docs → Finish Checklist).
+- **Phase 3:** Compose the guide using the templated sections, calling out unresolved questions for the maintainer.
+- **Phase 4:** Validate instructions, confirm README/conventional commit reminders, and summarize changes to the user.
 
-- **Phase 1:** Analyze and gather requirements, non-goals, risks, and implementation complexity
-- **Phase 2:** Generate a structured markdown implementation plan file
-- **Phase 3:** Validate completeness and clarity
-- **Phase 4:** Verify best practices (specificity, actionability, proper scoping)
+**Output:** Updated or newly created `AGENTS.md` scoped appropriately for the directory.
 
-**Output:** Markdown file at `plans/YYYY-MM-DD-feature-name.md`
+**Documentation:** See `skills/agent-context-generator/SKILL.md`
+
+---
+
+### bash-script-generator
+**Use this when:** You need a Bash 3.2-compatible script with consistent guardrails.
+
+- **Phase 1:** Gather script purpose, required arguments, environment variables, and external tool dependencies.
+- **Phase 2:** Plan the script layout (usage helper, requirement arrays, parsing strategy, main logic).
+- **Phase 3:** Compose the script including the mandatory `check_requirements` function and friendly error messaging.
+- **Phase 4:** Validate behavior, optionally format with `shfmt`, and provide the final script plus summary.
+
+**Output:** Fully scaffolded bash script with `set -euo pipefail`, `usage`, and `check_requirements` ready for customization.
+
+**Documentation:** See `skills/bash-script-generator/SKILL.md`
+
+---
+
+### implementation-plan-creator
+**Use this when:** Starting development on a new feature or user-facing functionality that needs a written implementation plan.
+
+- **Phase 1:** Analyze and gather requirements, non-goals, risks, and implementation complexity.
+- **Phase 2:** Generate a structured markdown implementation plan file.
+- **Phase 3:** Validate completeness and clarity.
+- **Phase 4:** Verify best practices (specificity, actionability, proper scoping).
+
+**Output:** Markdown plan placed at `plans/YYYY-MM-DD-feature-name.md`.
 
 **Documentation:** See `skills/implementation-plan-creator/SKILL.md`
-
-**Example:**
-```bash
-# Reference the skill when starting a feature
-/implementation-plan-creator
-
-# Or use the helper script to create a plan
-cd your-project
-./scripts/create-plan.sh "Add dark mode toggle"
-```
 
 ## How to Use Skills
 
@@ -85,25 +107,30 @@ Each skill file contains:
 ## Project Structure
 
 ```tree
-skills/
-├── README.md                        # This file
+.
+├── AGENTS.md                        # Project-wide agent guide
 ├── Brewfile                         # Homebrew dependencies (stow, claude-code, codex)
 ├── Justfile                         # Task runner (install, sync, unsync, status)
-├── .claude/
-│   └── settings.local.json         # Local permissions configuration
+├── LICENSE.txt                      # Repository license (MIT)
+├── README.md                        # This file
 ├── scripts/
-│   ├── sync.sh                     # Deploy skills to ~/.claude/skills and ~/.codex/skills
-│   ├── unsync.sh                   # Remove deployed skills
-│   └── status.sh                   # Show current deployment status
-└── skills/
-    └── implementation-plan-creator/
-        ├── SKILL.md                # Main skill documentation (15+ KB)
-        ├── scripts/
-        │   ├── create-plan.sh      # Helper to generate new plan files
-        │   └── ensure-plans-dir.sh # Helper to create plans/ directory
-        └── references/
-            ├── examples.md         # Detailed examples and patterns
-            └── agent-modes.md      # Agent operating modes & clarification strategies
+│   ├── sync.sh                      # Deploy skills to ~/.claude/skills and ~/.codex/skills
+│   ├── unsync.sh                    # Remove deployed skills
+│   └── status.sh                    # Show current deployment status
+├── skills/
+│   ├── agent-context-generator/
+│   │   ├── LICENSE.txt
+│   │   └── SKILL.md
+│   ├── bash-script-generator/
+│   │   ├── LICENSE.txt
+│   │   └── SKILL.md
+│   └── implementation-plan-creator/
+│       ├── LICENSE.txt
+│       ├── references/
+│       ├── scripts/
+│       └── SKILL.md
+└── .claude/
+    └── settings.local.json          # Local permissions configuration
 ```
 
 ## Adding New Skills
