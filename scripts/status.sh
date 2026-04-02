@@ -2,7 +2,7 @@
 echo "📍 Stow directory: $(pwd)"
 echo ""
 
-TARGET_DIRS=("${HOME}/.agents/skills")
+TARGET_DIRS=("${HOME}/.agents/skills" "${HOME}/.claude/skills")
 
 for TARGET_DIR in "${TARGET_DIRS[@]}"; do
     echo "🎯 Target directory: $TARGET_DIR"
