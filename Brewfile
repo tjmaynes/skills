@@ -1,2 +1,1 @@
 brew "stow"
-brew "opencode"

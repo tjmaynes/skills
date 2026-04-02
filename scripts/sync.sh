@@ -2,7 +2,7 @@
 set -euo pipefail
 
 STOW_DIR="$(pwd)"
-TARGET_DIRS=("${HOME}/.claude/skills" "${HOME}/.codex/skills")
+TARGET_DIRS=("${HOME}/.agents/skills")
 
 for TARGET_DIR in "${TARGET_DIRS[@]}"; do
     mkdir -p "$TARGET_DIR"

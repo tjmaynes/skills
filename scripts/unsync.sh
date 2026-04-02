@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-TARGET_DIRS=("${HOME}/.claude/skills" "${HOME}/.codex/skills")
+TARGET_DIRS=("${HOME}/.agents/skills")
 
 for TARGET_DIR in "${TARGET_DIRS[@]}"; do
     if [ -d "$TARGET_DIR" ]; then
