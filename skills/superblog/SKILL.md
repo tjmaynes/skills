@@ -16,7 +16,7 @@ metadata:
 - Brainstorm and refine a blog post idea with the writer, exploring angles, audience, and tone
 - Draft a complete, publish-ready blog post in Markdown
 - Generate tailored social media copy for LinkedIn and X to promote the post
-- Organize everything into a clean directory structure: `{blog-name}/posts/{YYYY-mm-dd}-{post-title}/`
+- Organize everything into a clean directory structure: `posts/{YYYY-mm-dd}-{post-title}/`
 
 ---
 
