@@ -41,7 +41,6 @@ The goal here is to help the writer move from a vague idea to a focused concept 
    - Understanding the audience shapes everything — vocabulary, depth, examples.
 
 4. **Nail down the details**
-   - Confirm the blog name (this becomes the top-level directory).
    - Confirm the post title (used in the directory name and file frontmatter).
    - Ask about any must-include points, links, or references.
    - Ask about target length — a quick 500-word take, a thorough 1500-word guide, or something longer.
