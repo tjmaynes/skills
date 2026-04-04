@@ -115,6 +115,7 @@ Social copy isn't just a shorter version of the post — each platform has its o
 
 2. **Write files**
    - `post.md` — the full blog post with YAML frontmatter
+   - `post.html` — an HTML version of the blog post (see reference template below). Convert the Markdown body to semantic HTML. Include a minimal inline stylesheet for readable typography (max-width, line-height, system font stack). Carry over the frontmatter fields into `<meta>` tags and a `<title>` element. The HTML file should be self-contained and look good when opened directly in a browser.
    - `social.md` — the social media copy, organized by platform:
      ```markdown
      # Social Media Copy
@@ -149,11 +150,11 @@ Social copy isn't just a shorter version of the post — each platform has its o
      - Suggest resharing the LinkedIn post and X thread 1–2 weeks later with a fresh angle or follow-up thought — most of their audience won't have seen it the first time.
 
 5. **Final summary**
-   - Share the file paths for both `post.md` and `social.md`.
+   - Share the file paths for `post.md`, `post.html`, and `social.md`.
    - Offer to revise any section based on final feedback.
    - Suggest next steps: publish the post, schedule the social copy, or iterate further.
 
-> **Checklist:** Directory created in the correct location, `post.md` and `social.md` written, publishing suggestions shared, no accidental overwrites, writer has the file paths and knows what to do next.
+> **Checklist:** Directory created in the correct location, `post.md`, `post.html`, and `social.md` written, publishing suggestions shared, no accidental overwrites, writer has the file paths and knows what to do next.
 
 ---
 
@@ -232,6 +233,56 @@ The problem? None of this builds understanding of *why* things work the way they
 - Replace docs with guided exploration
 
 4/ Full post with the details and what I'd do differently: [link]
+```
+
+### post.html
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Why Developer Onboarding Is Broken</title>
+  <meta name="author" content="Your Name">
+  <meta name="description" content="Most onboarding programs dump information on new hires instead of building context. Here's a better approach.">
+  <meta name="keywords" content="onboarding, engineering-culture, developer-experience">
+  <meta name="date" content="2026-04-01">
+  <style>
+    body {
+      max-width: 680px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.7;
+      color: #1a1a1a;
+    }
+    h1 { font-size: 2rem; margin-bottom: 0.25rem; }
+    h2 { margin-top: 2rem; }
+    .meta { color: #666; font-size: 0.9rem; margin-bottom: 2rem; }
+    a { color: #0366d6; }
+  </style>
+</head>
+<body>
+  <article>
+    <h1>Why Developer Onboarding Is Broken</h1>
+    <p class="meta">By Your Name &middot; April 1, 2026</p>
+
+    <p>Your opening hook goes here — a story, a bold claim, or a question that makes the reader want to keep going.</p>
+
+    <h2>The Problem</h2>
+    <p>...</p>
+
+    <h2>A Better Approach</h2>
+    <p>...</p>
+
+    <h2>What I'd Do Differently</h2>
+    <p>...</p>
+
+    <h2>Wrapping Up</h2>
+    <p>A closing thought and call to action.</p>
+  </article>
+</body>
+</html>
 ```
 
 Use these templates as starting points — adapt the structure and voice to match each writer's style and topic.
