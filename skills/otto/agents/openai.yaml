@@ -1,0 +1,6 @@
+interface:
+  display_name: "Otto"
+  short_description: "Design, plan, and build coding tasks"
+  default_prompt: "Use $otto to take this coding task from design through plan and build execution."
+policy:
+  allow_implicit_invocation: true

@@ -48,20 +48,6 @@ A curated collection of structured skills that guide Claude through complex deve
 
 ---
 
-### bash-script-generator
-**Use this when:** You need a Bash 3.2-compatible script with consistent guardrails.
-
-- **Phase 1:** Gather script purpose, required arguments, environment variables, and external tool dependencies.
-- **Phase 2:** Plan the script layout (usage helper, requirement arrays, parsing strategy, main logic).
-- **Phase 3:** Compose the script including the mandatory `check_requirements` function and friendly error messaging.
-- **Phase 4:** Validate behavior, optionally format with `shfmt`, and provide the final script plus summary.
-
-**Output:** Fully scaffolded bash script with `set -euo pipefail`, `usage`, and `check_requirements` ready for customization.
-
-**Documentation:** See `skills/bash-script-generator/SKILL.md`
-
----
-
 ### morning-paper-generator
 **Use this when:** Someone wants to start a new Julia Cameron-style morning pages session and needs a dated markdown entry with a fresh prompt.
 
@@ -76,17 +62,35 @@ A curated collection of structured skills that guide Claude through complex deve
 
 ---
 
-### implementation-plan-creator
-**Use this when:** Starting development on a new feature or user-facing functionality that needs a written implementation plan.
+### otto
+**Use this when:** You want one end-to-end workflow that takes a feature from design to planning to build execution with quality gates.
 
-- **Phase 1:** Analyze and gather requirements, non-goals, risks, and implementation complexity.
-- **Phase 2:** Generate a structured markdown implementation plan file.
-- **Phase 3:** Validate completeness and clarity.
-- **Phase 4:** Verify best practices (specificity, actionability, proper scoping).
+- **Stage 1: Design** - Clarify intent, evaluate approaches, and produce `design.md`.
+- **Stage 2: Plan** - Build a phased execution plan and produce `plan.md`.
+- **Stage 3: Build** - Execute phases with validation and produce `build.md`.
+- Enforces confidence-driven gating for autobuild and build readiness.
+- Enforces branch, commit, and push gate before build starts.
 
-**Output:** Markdown plan placed at `plans/YYYY-MM-DD-feature-name.md`.
+**Output:** 
+- `.agents/tasks/YYYY-MM-DD-feature-short-name/design.md`
+- `.agents/tasks/YYYY-MM-DD-feature-short-name/plan.md`
+- `.agents/tasks/YYYY-MM-DD-feature-short-name/build.md`
 
-**Documentation:** See `skills/implementation-plan-creator/SKILL.md`
+**Documentation:** See `skills/otto/SKILL.md`
+
+---
+
+### superblog
+**Use this when:** You want to draft a blog post with supporting social media copy.
+
+- **Phase 1:** Clarify topic, audience, angle, and publishing goals.
+- **Phase 2:** Draft the blog post in a dated content directory.
+- **Phase 3:** Generate platform-specific social copy.
+- **Phase 4:** Validate structure, links, and handoff notes.
+
+**Output:** Blog content and promotional copy organized in a dated directory.
+
+**Documentation:** See `skills/superblog/SKILL.md`
 
 ## How to Use Skills
 
@@ -95,7 +99,7 @@ A curated collection of structured skills that guide Claude through complex deve
 Skills are referenced using the `/skill-name` syntax:
 
 ```bash
-/implementation-plan-creator
+/otto
 ```
 
 This loads the complete skill guide, which includes:
@@ -135,15 +139,16 @@ Each skill file contains:
 │   ├── agent-context-generator/
 │   │   ├── LICENSE.txt
 │   │   └── SKILL.md
-│   ├── bash-script-generator/
+│   ├── morning-paper-generator/
 │   │   ├── LICENSE.txt
 │   │   └── SKILL.md
-│   ├── implementation-plan-creator/
+│   ├── otto/
+│   │   ├── agents/
 │   │   ├── LICENSE.txt
 │   │   ├── references/
 │   │   ├── scripts/
 │   │   └── SKILL.md
-│   └── morning-paper-generator/
+│   └── superblog/
 │       ├── LICENSE.txt
 │       └── SKILL.md
 └── .claude/
@@ -256,8 +261,8 @@ This repository uses **GNU stow** for symlink-based deployment:
 ```
 Repository (local)           →    User Home Directory (symlinked)
 skills/
-├── implementation-plan-creator  →  ~/.claude/skills/implementation-plan-creator
-└── [future-skills]          →  ~/.claude/skills/[future-skills]
+├── otto                    →  ~/.claude/skills/otto
+└── [other-skills]          →  ~/.claude/skills/[other-skills]
 ```
 
 **Advantages:**

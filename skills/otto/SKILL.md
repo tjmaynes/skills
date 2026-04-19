@@ -1,416 +1,258 @@
 ---
 name: otto
-description: Unified agentic coding workflow that combines brainstorming, superplan, and superbuild into a single sequential pipeline. Use when starting any significant coding task — it explores intent and designs a solution (brainstorming), creates a detailed multi-phase implementation plan (superplan), and executes it phase-by-phase with strict TDD enforcement and quality gates (superbuild). Triggers on "build something new", "implement a feature", "otto this", or any request that needs full design-through-execution workflow.
+description: Use for significant coding work that should move from idea to approved design, approved implementation plan, and automated build execution. Do not use for read-only review, quick one-file edits, direct bug fixes with an obvious patch, exploratory questions, or tasks where the user only wants planning.
 metadata:
-  version: 1.0.0
-  author: asteroid-belt
-  generated-at: 2025-04-19
-compatibility: Works with any codebase. Internet access used for best practices research during superplan's RESEARCH phase (bypassed if CLAUDE.md/AGENTS.md provides complete tech stack).
+  version: 2.1.0
+  author: tjmaynes
+  generated-at: 2026-04-19
+compatibility: Works with any codebase. Uses GitHub CLI (`gh`) when GitHub lookup or remote branch operations are needed.
 ---
 
-# Otto: Brainstorm → Superplan → Superbuild
+# Otto
 
-Otto is a unified, three-phase agentic coding pipeline that combines three proven skills into one seamless workflow:
+Inspired by established agentic design/planning/build workflows.
 
-1. **Brainstorming** — collaborative design exploration and spec creation
-2. **Superplan** — detailed multi-phase implementation planning with poker estimates and TDD acceptance criteria
-3. **Superbuild** — strict phase-by-phase execution with TDD enforcement, quality gates, and conventional commits
+Otto is a unified workflow with three artifacts in sequence:
 
-The output of each phase is a durable artifact (design doc → plan doc → build doc). Every phase's output feeds the next automatically.
+1. `design.md`
+2. `plan.md`
+3. `build.md`
 
----
+Default output path:
 
-## Core Workflow
+`.agents/tasks/<YYYY-MM-DD>-<feature-short-name>/`
 
-```
-OTTO PIPELINE
+## Logic Flow
 
-┌─────────────────────────────────────────────────────┐
-│  PHASE 1: BRAINSTORM                                 │
-│  Explore intent → Design → Approved design doc       │
-│  Output: .agents/tasks/<YYYY-mm-dd>-<feature>/design.md
-└──────────────────────┬──────────────────────────────┘
-                       │ design doc
-                       ▼
-┌─────────────────────────────────────────────────────┐
-│  PHASE 2: SUPERPLAN                                  │
-│  INTAKE → DETECT → INTERVIEW → RESEARCH → EXPLORE   │
-│  → ARCHITECT → PHASE → DETAIL → TEST → DOCUMENT     │
-│  Output: .agents/tasks/<YYYY-mm-dd>-<feature>/plan.md
-└──────────────────────┬──────────────────────────────┘
-                       │ plan doc
-                       ▼
-┌─────────────────────────────────────────────────────┐
-│  PHASE 3: SUPERBUILD                                 │
-│  INGEST → READ → EXECUTE PHASE → ENFORCE DOD       │
-│  → UPDATE PLAN → COMMIT → FUNCTIONAL TEST          │
-│  Output: .agents/tasks/<YYYY-mm-dd>-<feature>/build.md
-└─────────────────────────────────────────────────────┘
-```
-
----
-
-## Phase 1: Brainstorming
-
-**Goal:** Turn a rough idea into a validated, approved design document.
-
-### When Otto Starts
-> "I'm using the **otto** skill — a unified pipeline that combines brainstorming, planning, and execution. We'll go through three phases: first I'll help you design the solution, then I'll create a detailed implementation plan, then I'll execute it phase-by-phase with full TDD enforcement. Let's start with **Phase 1: Brainstorming**."
-
-### Step 1: Explore Project Context
-Check the current project state (files, docs, recent commits). Understand the existing structure and patterns before asking design questions.
-
-### Step 2: Assess Scope
-If the request describes multiple independent subsystems (e.g., "build a platform with chat, file storage, billing, and analytics"), flag this immediately. Help the user decompose into sub-projects first — each sub-project gets its own otto run.
-
-### Step 3: Offer Visual Companion (if applicable)
-If the topic involves visual questions (mockups, layouts, UI decisions), offer the visual companion as its own message:
-> "Some of what we're working on might be easier to explain if I can show it to you in a web browser. I can put together mockups, diagrams, and visual comparisons as we go. This feature is still new and can be token-intensive. Want to try it?"
-
-Wait for response before continuing. Per-question decision — even if accepted, decide individually whether each question needs the browser.
-
-### Step 4: Ask Clarifying Questions
-Ask **one question at a time**. Prefer multiple choice when possible.
-
-Required questions to cover:
-- What is the purpose? Who is the user?
-- What constraints exist (tech stack, deadlines, team size)?
-- What does success look like? How will we know it's done?
-- What is explicitly OUT of scope?
-- What can be deferred to v2?
-
-### Step 5: Propose 2-3 Approaches
-Present approaches conversationally with trade-offs. Lead with your recommendation and explain why.
-
-### Step 6: Present the Design
-Scale each section to its complexity. Cover: architecture, components, data flow, error handling, testing. Get user approval after each section before moving on.
-
-### Step 7: Write the Design Document
-Save to `.agents/tasks/<YYYY-mm-dd>-<feature>/design.md` (user preferences override this path).
-
-Include:
-- **Goal** — one sentence
-- **Architecture** — 2-3 sentences
-- **Tech Stack** — key technologies
-- **Components** — what is being built
-- **Data Flow** — how data moves through the system
-- **Error Handling** — how errors are caught and reported
-- **Testing** — how each component is tested
-
-Commit the design document to git.
-
-### Step 8: Spec Self-Review
-Look at the written spec with fresh eyes:
-1. **Placeholder scan** — any "TBD", "TODO", vague requirements? Fix them.
-2. **Internal consistency** — do sections contradict each other?
-3. **Scope check** — is this focused enough for a single plan?
-4. **Ambiguity check** — could any requirement be interpreted two ways? Pick one and make it explicit.
-
-Fix issues inline. No re-review needed.
-
-### Step 9: User Review Gate
-> "Spec written and committed to `<path>`. Please review it and let me know if you'd like to make any changes before we start the implementation plan."
-
-Wait for user response. If changes requested, make them and re-run the review loop. Only proceed once approved.
-
-### Step 10: Transition to Superplan
-> "Design approved. Transitioning to **Phase 2: Superplan** — I'll now create a detailed multi-phase implementation plan from your design doc."
-
----
-
-## Phase 2: Superplan
-
-**Goal:** Create a detailed, executable, multi-phase implementation plan with poker estimates, TDD acceptance criteria, and quality gates.
-
-### Step 1: Intake
-Read the design doc created in Phase 1. Extract requirements, architecture decisions, and tech stack.
-
-### Step 2: Detect Tech Stack
-Check `CLAUDE.md` or `AGENTS.md` for complete tech stack. If complete, **bypass** the RESEARCH phase. If not found or incomplete, proceed to Step 4 (Research).
-
-### Step 3: Interview (if needed)
-If the design doc didn't fully cover requirements, ask 3-5 clarifying questions:
-1. What is the MVP? What can we defer to v2?
-2. What is explicitly out of scope?
-3. Are there performance or security requirements?
-4. What test coverage is expected?
-
-Wait for answers before proceeding.
-
-### Step 4: Research (if needed)
-If tech stack was not detected from CLAUDE.md/AGENTS.md, launch parallel web searches:
-- `[language] [framework] best practices`
-- `[framework] [vX.X] patterns`
-- `[framework] security guidelines`
-
-### Step 5: Explore Codebase
-Launch 3 parallel explore agents:
-1. **Pattern Discovery** — find similar implementations in the codebase
-2. **Integration Points** — identify files that need modification
-3. **Technical Debt Scan** — check for issues in affected areas
-
-### Step 6: Refactor Assessment
-Evaluate if refactoring should precede feature work:
-
-| Level | Description | Action |
-|---|---|---|
-| LOW | Code is clean | Proceed to Architect |
-| MEDIUM | Some smells | Note debt, ask user preference |
-| HIGH | Significant issues | Recommend refactor phases |
-| CRITICAL | Major rewrite needed | Propose Mikado/Strangler Fig |
-
-If HIGH or CRITICAL, ask permission to add refactoring phases.
-
-### Step 7: Architect
-For each component, document:
-- What new components are being added
-- How they connect to existing components
-- What is the data flow
-
-Required outputs:
-- System context diagram
-- API design (if applicable) with all response codes
-- Data model (if applicable) with migration scripts
-- Component tree (if UI)
-
-### Step 8: Phase Breakdown
-Break work into phases that can be executed in parallel where possible.
-
-**Phase Design Principles:**
-1. **Independence** — phases executable without waiting for others
-2. **Testability** — each phase independently testable
-3. **Estimated Size** — target 3-8 poker points per phase
-4. **Quality Gated** — each phase includes Definition of Done
-5. **Context Managed** — each phase ends with a CHECKPOINT for compaction
-
-**Poker Planning Estimates:**
-
-| Size | Meaning | Example |
-|---|---|---|
-| 1 | Trivial | Config value, typo fix |
-| 2 | Small | Single file, simple function |
-| 3 | Medium | Multi-file, new component |
-| 5 | Large | Feature module, API endpoint |
-| 8 | X-Large | Complex feature with dependencies |
-| 13 | Epic chunk | Major subsystem change |
-| 21 | Too big | **Split into smaller tasks** |
-
-### Step 9: Detail — TDD Micro-Structure Per Task
-Each phase task uses a **5-step TDD micro-structure** (borrowed from writing-plans):
-
-For each task in each phase:
-1. **Write test** (spec) — show the actual test code
-2. **Run test, verify failure** — show the exact command and expected failure output
-3. **Write minimal implementation** — show the actual code
-4. **Run test, verify pass** — show the exact command and expected pass output
-5. **Commit** — conventional commit format
-
-**No placeholders allowed.** Every step must show actual code, actual commands, actual expected outputs.
-
-### Step 10: Document — Write Plan File
-Write the plan to `.agents/tasks/<YYYY-mm-dd>-<feature>/plan.md`
-
-Plan document must include:
-- **Plan Status:** Execute this plan using `otto` skill (superbuild phase).
-- **Design Doc Reference:** Link back to the originating design doc.
-- **Phase list** with poker estimates, dependencies, and Definition of Done.
-- **CHECKPOINT** at end of each phase: `- [ ] CHECKPOINT: Run /compact focus on: [Phase N] complete, [key artifacts], [Phase N+1] goals`
-- **TDD Micro-Structure** for every task in every phase.
-
-Commit the plan document.
-
-### Step 11: Transition to Superbuild
-> "Plan complete and saved to `.agents/tasks/<YYYY-mm-dd>-<feature>/plan.md`. Transitioning to **Phase 3: Superbuild** — I'll now execute each phase with strict TDD enforcement and quality gates."
-
----
-
-## Phase 3: Superbuild
-
-**Goal:** Execute the implementation plan phase-by-phase with strict TDD enforcement, quality gates, and conventional commit generation.
-
-### Step 1: Ingest Plan
-Confirm the plan document is present and readable. Parse all phases, estimates, and dependencies.
-
-### Step 2: Read All Phases
-Outline all phases with estimates and dependencies. Check context usage — if high, suggest compacting before continuing.
-
-Present the phase map:
-```
-PLAN LOADED: <Feature Name>
-
-[ ] Phase 1: <Name> | <Estimate> | <Dependencies>
-[ ] Phase 2: <Name> | <Estimate> | <Dependencies>
-...
-
-Total: <N> phases | Total Est: <N> hrs
-Ready to execute Phase 01
+```mermaid
+flowchart TD
+    A[User request] --> B[Explore repository context]
+    B --> C{Scope fits one task?}
+    C -- No --> D[Decompose into smaller task]
+    D --> B
+    C -- Yes --> E[Design stage]
+    E --> F[Write design.md]
+    F --> G{User approves design?}
+    G -- No --> E
+    G -- Yes --> H[Plan stage]
+    H --> I[Write plan.md]
+    I --> J[Score Design+Plan Confidence]
+    J --> K{User approves plan?}
+    K -- No --> H
+    K -- Yes --> L{Confidence >= 95% and no hard-fails?}
+    L -- Yes --> M[Ask autobuild prompt]
+    L -- No --> N[Autobuild unavailable; continue gated mode]
+    M --> O[Branch, commit design+plan, push]
+    N --> O
+    O --> P{Pre-build gate passes?}
+    P -- No --> Q[Block build and resolve]
+    Q --> O
+    P -- Yes --> R[Build stage]
+    R --> S[Score Build Confidence]
+    S --> T{Build Confidence >= 90%?}
+    T -- No --> U[Manual phase-by-phase mode]
+    T -- Yes --> V[Automated phase execution]
+    U --> W[Execute phase with fresh validation]
+    V --> W
+    W --> X{Validation passes?}
+    X -- No --> Y[Pause, fix or clarify]
+    Y --> W
+    X -- Yes --> Z[Update plan.md and build.md]
+    Z --> AA[Commit and push phase]
+    AA --> AB{More phases?}
+    AB -- Yes --> S
+    AB -- No --> AC[Final summary]
 ```
 
-### Step 3: Critical Plan Review
-Before executing, verify:
-1. **Ambiguity** — are any tasks unclear?
-2. **Missing dependencies** — are required tools/files/packages identified?
-3. **Test gaps** — does each task have explicit acceptance criteria?
-4. **Risky changes** — any destructive or breaking changes?
+## Hard Gates
 
-If concerns exist, pause and resolve before executing.
+- Never start Build until Design and Plan are approved.
+- Never start Build until branch, commit, and push gates pass.
+- Never bypass quality validation for a completed phase.
+- Never continue automated build execution when build validation fails or request clarity is missing.
 
-### Step 4: Execute Phase
+## Workflow
 
-For **each phase** (one at a time, no skipping):
+### Stage 1: Design
 
-#### Sequential Tasks
-Execute one task at a time following the TDD micro-structure:
-1. Write the failing test
-2. Run test, **verify it fails** (mandatory — must see RED)
-3. Write minimal implementation
-4. Run test, **verify it passes** (mandatory — must see GREEN)
-5. Stage and commit
+Before starting Design, read:
 
-**TDD Enforcement Rules:**
+- [DESIGN-PROTOCOL.md](references/DESIGN-PROTOCOL.md)
+- [DESIGN-TEMPLATE.md](references/DESIGN-TEMPLATE.md)
 
-| Rule | Enforcement |
-|---|---|
-| Test before code | **STOP** if implementation exists without test |
-| Verify RED | **STOP** if test passes immediately (testing existing behavior) |
-| Minimal code | **STOP** if coding features beyond current task |
-| Verify GREEN | **STOP** if test fails after implementation |
-| No regressions | **STOP** if other tests start failing |
+1. Explore codebase context (files, docs, recent commits, conventions).
+2. Assess whether the request must be decomposed before design.
+3. Ask one clarifying question at a time.
+4. Propose 2-3 approaches with tradeoffs and a recommendation.
+5. Present design sections incrementally and collect approval.
+6. Write `design.md` at the run path.
+7. Run a self-review pass (ambiguity, contradictions, placeholders, scope).
+8. Ask user to approve final `design.md`.
 
-If test passes immediately → the test is wrong. Stop and fix.
-If you cannot explain why the test failed → you don't understand the requirement. Stop and clarify.
+Design output must include:
 
-#### Parallel Tasks
-For phases marked "Parallel With", use sub-agents or parallel task calls. Each sub-agent must return: implementation details, DoD status (Lint/Test), proposed commit message.
+- Goal
+- Success criteria
+- Constraints
+- Scope / non-goals
+- Chosen approach and alternatives considered
+- Architecture and component boundaries
+- Data flow
+- Error handling
+- Test strategy
+- Risks and mitigations
+- Planning inputs
 
-**Sub-agent result verification — CRITICAL:**
-DO NOT trust sub-agent claims without independent verification.
-- Run `ls` to confirm files exist
-- Run `cat` to verify content
-- Verify plan file was updated
-Only after independent verification, collect commit messages.
+### Stage 2: Plan
 
-### Step 5: Enforce Definition of Done
-EVERY phase must pass ALL quality gates before completion.
+Before starting Plan, read:
 
-The Verification Gate (run for EVERY check):
-1. **IDENTIFY** — which command proves this claim?
-2. **RUN** — execute the command NOW
-3. **READ** — parse output for errors/success
-4. **VERIFY** — does output match the claim?
-5. **THEN CLAIM** — only state success after steps 1-4
+- [PLANNING-PROTOCOL.md](references/PLANNING-PROTOCOL.md)
+- [PLAN-TEMPLATE.md](references/PLAN-TEMPLATE.md)
+- [CONFIDENCE-RUBRIC.md](references/CONFIDENCE-RUBRIC.md)
 
-**Invalid evidence:**
-- Previous run output from more than 2 minutes ago
-- "I remember the tests passed earlier"
-- "Probably works" / "should pass" / "seems fine"
-- Sub-agent reports without independent verification
+1. Use approved `design.md` as source of truth.
+2. Detect stack, quality tools, and validation commands from repo docs first.
+3. Fill only plan-blocking gaps with targeted questions.
+4. Research current practices when local docs and code patterns are insufficient.
+5. Explore codebase patterns, integration points, and local technical debt.
+6. Assess whether bootstrap or refactor phases are required.
+7. Define architecture, data flow, contracts, and error handling.
+8. Produce phase-based plan with dependencies, estimates, and Definition of Done.
+9. Detail code deltas and test-first task structure.
+10. Score Design+Plan Confidence.
+11. Write `plan.md`, self-review it, and ask user for approval.
 
-**Red Flag Language — HALT immediately:**
-- "should pass" → RUN the check
-- "probably works" → RUN the check
-- "I believe it passed" → RUN the check
+Plan requirements:
 
-### Step 6: Update Plan
-Mark completed tasks and phases in the plan file:
-```
-- [x] Phase 1: Setup | 15m | DONE
-- [x] Task 1.1: Create config | 5m | DONE
-```
+- Phase list with estimates and dependencies
+- Architecture and implementation decisions
+- Research findings when external or version-sensitive guidance was needed
+- Integration points and affected files
+- Bootstrap/refactor phases when required
+- Task checklist per phase
+- Test-first steps per task
+- Validation commands per phase
+- Phase status fields that can be updated during Build
+- Checkpoint notes for context management
 
-### Step 7: Generate Commit Message
-Generate a conventional commit for each completed task:
-```
-<type>: <short description>
+Planning protocol details live in [PLANNING-PROTOCOL.md](references/PLANNING-PROTOCOL.md).
 
-<optional body with context>
-```
+## Confidence Model
 
-Types: `feat`, `fix`, `refactor`, `test`, `docs`, `chore`
+Otto tracks two confidence scores.
 
-Run `git commit` with the generated message. **Never run git without a message.**
+### A) Design+Plan Confidence
 
-### Step 8: Functional Test
-Prove the implementation works to the user. Offer integration test scripts or manual verification steps.
+Purpose: governs whether Autobuild mode can be offered.
 
-### Step 9: Stop — Wait for User
-After each phase completion:
-> "Phase <N> complete. All quality gates passed. Commit(s) generated. Ready for your review — would you like me to continue to the next phase?"
+- Combined method: hard-fails + rubric scoring.
+- Compute at:
+  - end of Design
+  - end of Plan
+- If hard-fail exists, confidence cannot reach 95%.
 
-**Wait for user response.** Only proceed with user approval.
+Threshold behavior:
 
-Exception: If in **BUILD-ALL mode** (user explicitly requested continuous execution), parse the CHECKPOINT and auto-compact, then proceed to next phase.
+- If `>=95%` and no hard-fails, ask exactly:
+  - `Confidence is X%. Do you want to run in autobuild mode?`
+- If `<95%`, state explicitly that Autobuild is unavailable below threshold.
 
-### Step 10: Write Build Documentation
-After each phase, append to `.agents/tasks/<YYYY-mm-dd>-<feature>/build.md`:
-- Phase completed and timestamp
-- Quality gate results (actual command output)
-- Commit messages generated
-- Any issues encountered and resolutions
+Rubric details live in [CONFIDENCE-RUBRIC.md](references/CONFIDENCE-RUBRIC.md).
 
----
+### B) Build Confidence
 
-### File Paths
-All three generated files live together in one directory:
-```
-.agents/tasks/<YYYY-mm-dd>-<feature-short-name>/
-├── design.md   # Phase 1 output
-├── plan.md     # Phase 2 output
-└── build.md   # Phase 3 output
-```
+Purpose: hard gate for build execution readiness.
 
-Example:
-```
-.agents/tasks/2025-04-19-user-auth/
-├── design.md
-├── plan.md
-└── build.md
-```
+- Compute immediately before build kickoff and before each phase.
+- If `<90%`: do not run automated build execution. Fall back to manual phase-by-phase mode.
+- If `>=90%`: automated phase execution is allowed.
 
-User preferences for the base path override this default.
+## Branch / Commit / Push Gate (Required Before Build)
 
-### CHECKPOINT Protocol
-Every phase in the plan MUST end with:
-```
-- [ ] **CHECKPOINT:** Compact context before Phase N+1
-```
+After user approves `plan.md`, Otto must automatically:
 
-CHECKPOINT enables:
-- Context compaction between phases
-- Seamless resume after breaks
-- BUILD-ALL auto-compaction
+1. Verify GitHub CLI access with `gh auth status` when the repository is hosted on GitHub.
+2. Inspect repository identity with `gh repo view --json nameWithOwner,url` when available.
+3. Create or switch to branch `<feature-short-name>`.
+4. Ensure `design.md` and `plan.md` exist in run directory.
+5. Commit those files with:
+   - `chore: add initial design.md and plan.md files for feature "<feature-short-name>"`
+6. Push the branch to remote and set upstream.
+7. Confirm remote branch visibility with `gh repo view` or `git ls-remote --heads origin <feature-short-name>`.
 
-### Context Management
-- Before Phase 2 (Superplan): summarize Phase 1 outcome in 3-5 sentences
-- Before Phase 3 (Superbuild): summarize Phase 1+2 outcome in 3-5 sentences
-- Between phases in Superbuild: use CHECKPOINT for context compaction
+Use git CLI for local branch, commit, and push operations. Use `gh` for GitHub repository lookup, authentication checks, PR/issue lookup, and remote confirmation.
 
-### Otto Exit States
+If any of these fail, Build is blocked until resolved.
 
-| State | Condition | Action |
-|---|---|---|
-| Design rejected | User rejects spec | Iterate on design, re-run Phase 1 |
-| Plan rejected | User rejects plan | Iterate on plan, re-run Phase 2 |
-| Plan concerns | Ambiguous tasks, missing deps | Pause, resolve, then proceed |
-| Quality gate fail | Lint/test/format fails | Fix, re-run gate, don't skip |
-| Phase complete | All tasks done, all gates pass | Stop, await user approval |
-| Build complete | All phases done | Summarize, offer code review |
+## Stage 3: Build
 
-### What Otto Does NOT Do
-- **Does not skip phases** — even "simple" tasks go through full pipeline
-- **Does not bypass quality gates** — no TDD enforcement exceptions
-- **Does not trust claims without evidence** — always verify independently
-- **Does not write placeholder code** — no TODOs, TBDs, or vague steps
-- **Does not proceed without user approval** — after design, after plan, after each phase
+Build executes the approved `plan.md` and writes evidence to `build.md`.
 
----
+Before starting Build, read:
 
-## Key Principles
+- [BUILD-PROTOCOL.md](references/BUILD-PROTOCOL.md)
+- [BUILD-LOG-TEMPLATE.md](references/BUILD-LOG-TEMPLATE.md)
+- [CONFIDENCE-RUBRIC.md](references/CONFIDENCE-RUBRIC.md)
 
-- **YAGNI ruthlessly** — remove unnecessary features from all designs
-- **One question at a time** — don't overwhelm with multiple questions
-- **Multiple choice preferred** — easier for users to answer
-- **Incremental validation** — present design, get approval, then proceed
-- **TDD or nothing** — no implementation without failing tests first
-- **Evidence over memory** — always run verification commands fresh
-- **Complete artifacts** — every phase produces a durable, reviewable document
+### Execution Policy
+
+- Preferred mode: automated phase execution.
+- Run sequentially by default.
+- For clearly independent tasks/phases, require parallel execution.
+- Pause only when:
+  - validation fails
+  - ambiguity blocks safe execution
+  - user clarification is required
+  - repository, branch, or dependency state is unsafe
+
+### Per-Phase Protocol
+
+For each phase:
+
+1. Read phase scope, dependencies, tasks, Definition of Done, and validation commands.
+2. Run critical plan review for the phase.
+3. Confirm Build Confidence `>=90%`.
+4. Mark the phase in progress in `plan.md`.
+5. Execute task checklist in dependency order.
+6. Enforce test-first order for every code-changing task.
+7. Run fresh validation evidence for tests, lint, format, and type/build checks.
+8. Update `plan.md` after validation passes.
+9. Append phase outcome and evidence to `build.md`.
+10. Commit phase changes with a conventional commit message.
+11. Push the branch and confirm remote visibility.
+12. Continue automatically only if validation passed and Build Confidence remains `>=90%`.
+
+Before running validation, read [scripts/README.md](scripts/README.md) if the stack is unclear or the default validator does not match the repository.
+
+### Build Log Must Capture
+
+- Timestamped phase summary
+- Build mode and Build Confidence score
+- Commands executed for verification
+- Validation pass/fail results
+- Files changed
+- Commit message(s)
+- Push result
+- Open issues / follow-up actions
+
+## Script Resources
+
+- `scripts/validate-phase.sh`: validates linter, formatter, type checks, and tests for common stacks.
+- `scripts/README.md`: script usage and expected behavior.
+
+## Safety Rules
+
+- No destructive git operations unless explicitly requested by user.
+- No skipped validations for “small” changes.
+- No build continuation after failed validation without remediation.
+- No hidden assumptions: surface blockers immediately.
+
+## Completion
+
+The workflow is complete when:
+
+1. All planned phases are done.
+2. Validation passes for each completed phase.
+3. `build.md` is complete and current.
+4. User receives a concise summary of results, risks, and next steps.

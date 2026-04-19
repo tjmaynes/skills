@@ -5,7 +5,7 @@
 - **Primary languages:** Markdown, Bash
 - **Package manager:** Homebrew via `Brewfile` (`stow`, `claude-code`, `codex`)
 - **Task runner:** `just` (preferred). Deployment helpers live in `scripts/`
-- **Skill bundles:** `agent-context-generator`, `bash-script-generator`, `implementation-plan-creator`, `morning-paper-generator`
+- **Skill bundles:** `agent-context-generator`, `morning-paper-generator`, `otto`, `superblog`
 - **Key automation:** `tree --gitignore -a -L 3` for structure snapshots, GNU stow for skill deployment
 - **CI/CD:** Not configured in-repo; rely on local validation before opening PRs
 
@@ -22,16 +22,19 @@
 │   └── status.sh
 ├── skills/               # Individual skill bundles (SKILL.md, references, scripts)
 │   ├── agent-context-generator/
-│   ├── bash-script-generator/
-│   ├── implementation-plan-creator/
-│   └── morning-paper-generator/
+│   ├── morning-paper-generator/
+│   ├── otto/
+│   │   ├── agents/
+│   │   ├── references/
+│   │   └── scripts/
+│   └── superblog/
 ```
 - `.git/` and other VCS artifacts omitted for clarity.
 - Skill bundles:
   - `skills/agent-context-generator/` — Generates project-level AGENTS.md context with tree snapshots and follow-up checklists.
-  - `skills/bash-script-generator/` — Produces Bash 3.2 scripts with `check_requirements` guardrails and optional `shfmt` formatting.
-  - `skills/implementation-plan-creator/` — Guides feature planning with multi-phase implementation plans.
   - `skills/morning-paper-generator/` — Creates daily morning pages prompts and scaffolds reflective markdown entries.
+  - `skills/otto/` — Runs an end-to-end design, plan, and build workflow for agentic coding tasks.
+  - `skills/superblog/` — Generates blog posts and cross-platform social copy.
 - Regenerate this snapshot after structural changes with `tree --gitignore -a -L 3`.
 
 ## Tooling & Setup
