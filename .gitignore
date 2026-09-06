@@ -2,3 +2,6 @@
 .DS_Store
 .claude/settings.local.json
 
+# Generated design and implementation planning artifacts
+/docs/
+/plans/
