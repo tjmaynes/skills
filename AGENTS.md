@@ -40,14 +40,14 @@
 ## Tooling & Setup
 - **System requirements:** macOS or Linux with Homebrew installed (`brew --version`).
 - **Install dependencies:** `just install` (installs `stow`, `claude-code`, `codex`).
-- **Skill deployment:** `just sync` symlinks `skills/` into `~/.claude/skills` and `~/.codex/skills` via GNU stow.
+- **Skill deployment:** `just sync` symlinks `skills/` into `~/.agents/skills` via GNU stow. If the `claude` command is available, it also symlinks them into `~/.claude/skills`.
 - **Secrets/config:** No secrets tracked here. Downstream skills should document their own environment variables.
 - **CLI permissions:** `.claude/settings.local.json` enumerates whitelisted shell commands for Claude/Codex; extend it if new automation is required.
 - **Tree utility:** Prefer `tree` ≥ 2.0 for `--gitignore`. If unavailable, install with `brew install tree` or prune ignored paths manually.
 
 ## Common Tasks
 - `just install` — Install Homebrew dependencies from `Brewfile`.
-- `just sync` — Symlink all skills into Claude/Codex directories (idempotent).
+- `just sync` — Symlink all skills into `~/.agents/skills` and, when available, Claude's directory (idempotent).
 - `just unsync` — Remove stowed skills from local tool directories.
 - `just status` — Display which skills are currently symlinked and their targets.
 - `tree --gitignore -a -L 3` — Capture an up-to-date repository snapshot for documentation.

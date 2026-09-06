@@ -1,0 +1,65 @@
+# RenderCV reference template for resume-generator.
+#
+# Replace every example value with explicitly supported career-data evidence or
+# user-provided profile information. These synthetic values are intentionally
+# compilable examples, not defaults to copy into a candidate resume.
+cv:
+  # Populate from career-data profile fields; ask the user for any missing value.
+  name: Avery Chen
+  email: avery.chen@example.com
+  location: Seattle, WA
+  website: https://averychen.example.com
+  social_networks:
+    - network: LinkedIn
+      username: averychen
+    - network: GitHub
+      username: averychen
+
+  sections:
+    summary:
+      - Engineering leader and hands-on builder focused on reliable software delivery and developer productivity.
+
+    skills:
+      - label: Languages
+        details: Python, TypeScript, Go, SQL
+      - label: Platforms
+        details: Cloud infrastructure, CI/CD, Containers, Observability
+      - label: Practices
+        details: Technical leadership, Test-driven development, Continuous delivery
+
+    experience:
+      - company: Example Systems
+        position: Engineering Manager
+        location: Seattle, WA
+        start_date: 2023-01
+        end_date: present
+        highlights:
+          - Led a cross-functional engineering team delivering evidence-based developer productivity improvements.
+          - Established delivery practices that improved reliability and shortened feedback cycles.
+      - company: Sample Platform Co.
+        position: Senior Software Engineer
+        location: Remote
+        start_date: 2020-06
+        end_date: 2022-12
+        highlights:
+          - Built and operated a customer-facing platform with automated testing and continuous delivery.
+
+    education:
+      - institution: Example University
+        area: Computer Science
+        degree: Bachelor of Science
+        location: Seattle, WA
+        start_date: 2014-09
+        end_date: 2018-06
+
+    certificates:
+      - label: Example Professional Certification
+        details: "Issuer: Example Institute, Date: January 2024"
+
+# Use the shared single-column-safe theme unless a candidate explicitly supplies
+# an alternate validated RenderCV design.
+design:
+  theme: sb2nov
+
+locale:
+  language: english

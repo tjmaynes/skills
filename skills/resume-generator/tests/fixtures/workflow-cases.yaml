@@ -1,0 +1,85 @@
+# Synthetic policy cases for the agent-operated resume-generator workflow.
+# Every case names the expected decision before any resume artifact can exist.
+
+inaccessible_job_url:
+  input:
+    job_description_url: https://example.invalid/jobs/platform-engineer
+    job_description_text: null
+  expected:
+    decision: request_pasted_job_description
+    writes_destination: false
+    writes_resume_yaml: false
+    writes_resume_pdf: false
+
+invalid_career_yaml:
+  input:
+    career_data_path: tests/fixtures/invalid-career.yaml
+  expected:
+    decision: report_validation_error
+    writes_destination: false
+    writes_resume_yaml: false
+    writes_resume_pdf: false
+
+unresolved_employer:
+  input:
+    career_data_path: tests/fixtures/career-with-unresolved-employer.yaml
+  expected:
+    decision: exclude_project_and_request_correction
+    writes_destination: false
+    writes_resume_yaml: false
+    writes_resume_pdf: false
+
+fit_below_threshold:
+  input:
+    fit_estimate: 89
+    missing_must_haves:
+      - distributed systems
+  expected:
+    decision: report_score_and_categorized_gaps
+    writes_destination: false
+    writes_resume_yaml: false
+    writes_resume_pdf: false
+
+fit_above_threshold_without_approval:
+  input:
+    fit_estimate: 92
+    user_approved_selection: false
+  expected:
+    decision: show_proposal_and_wait_for_approval
+    writes_destination: false
+    writes_resume_yaml: false
+    writes_resume_pdf: false
+
+existing_destination:
+  input:
+    fit_estimate: 92
+    user_approved_selection: true
+    destination_exists: true
+  expected:
+    decision: refuse_overwrite_and_request_new_destination
+    writes_destination: false
+    writes_resume_yaml: false
+    writes_resume_pdf: false
+
+rendercv_unavailable:
+  input:
+    fit_estimate: 92
+    user_approved_selection: true
+    rendercv_available: false
+  expected:
+    decision: report_rendercv_setup_error
+    writes_destination: false
+    writes_resume_yaml: false
+    writes_resume_pdf: false
+
+approved_success:
+  input:
+    fit_estimate: 92
+    user_approved_selection: true
+    destination_exists: false
+    rendercv_available: true
+  expected:
+    decision: validate_render_and_report_artifacts
+    writes_destination: true
+    writes_resume_yaml: true
+    writes_resume_pdf: true

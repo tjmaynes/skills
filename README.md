@@ -18,7 +18,8 @@ A curated collection of structured skills that guide Claude through complex deve
    ```bash
    just sync
    ```
-   This symlinks all skills to `~/.claude/skills` and `~/.codex/skills`, making them available to Claude Code and Codex.
+   This symlinks all skills to `~/.agents/skills`. When the `claude` command is
+   installed, it also symlinks them to `~/.claude/skills` for Claude Code.
 
 3. **Verify installation:**
    ```bash
@@ -131,8 +132,11 @@ Each skill file contains:
 ├── Justfile                         # Task runner (install, sync, unsync, status)
 ├── LICENSE.txt                      # Repository license (MIT)
 ├── README.md                        # This file
+├── docs/
+│   └── superpowers/
+│       └── specs/                   # Approved implementation designs
 ├── scripts/
-│   ├── sync.sh                      # Deploy skills to ~/.claude/skills and ~/.codex/skills
+│   ├── sync.sh                      # Deploy to ~/.agents/skills; Claude target when installed
 │   ├── unsync.sh                    # Remove deployed skills
 │   └── status.sh                    # Show current deployment status
 ├── skills/
@@ -234,7 +238,7 @@ When creating or updating skills, follow these principles:
 # Install dependencies (Homebrew)
 just install
 
-# Deploy skills to ~/.claude/skills and ~/.codex/skills
+# Deploy skills to ~/.agents/skills and, when installed, ~/.claude/skills
 just sync
 
 # Remove deployed skills
@@ -261,8 +265,9 @@ This repository uses **GNU stow** for symlink-based deployment:
 ```
 Repository (local)           →    User Home Directory (symlinked)
 skills/
-├── otto                    →  ~/.claude/skills/otto
-└── [other-skills]          →  ~/.claude/skills/[other-skills]
+├── otto                    →  ~/.agents/skills/otto
+│                         →  ~/.claude/skills/otto (when Claude Code is installed)
+└── [other-skills]          →  corresponding target directories
 ```
 
 **Advantages:**
