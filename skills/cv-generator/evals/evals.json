@@ -1,0 +1,59 @@
+{
+  "description": "Behavioral evaluations for the cv-generator skill. Run each prompt with the skill in an isolated copy of the repository; inspect generated files and grade each criterion. Never upload private career evidence to an external evaluator.",
+  "cases": [
+    {
+      "id": "general-cv",
+      "prompt": "Use the cv-generator skill to create a general CV from skills/cv-generator/examples/career.yaml.",
+      "criteria": [
+        "Reads the source file and creates docs/cv-generator/cv.pdf.",
+        "Uses only supported evidence, honors employer inclusion flags and preserves qualifications and employment dates.",
+        "Includes source skills, education and certifications in the required order, omitting a headline.",
+        "Parses the input, verifies the PDF and visually inspects every page, reporting the page count."
+      ]
+    },
+    {
+      "id": "job-link-resume",
+      "prompt": "Use the cv-generator skill to create a tailored resume from skills/cv-generator/examples/career.yaml for the job posting at JOB_URL.",
+      "setup": "Replace JOB_URL with an accessible, complete job posting. Record the URL and a local copy of the posting for repeatability; do not send career evidence to the posting site.",
+      "criteria": [
+        "Reads the source and complete posting, identifies the company and role, and maps supported evidence to requirements.",
+        "Performs the applicable fit and ATS assessment and follows the artifact approval gate when required.",
+        "Creates resume.yaml and resume.pdf only if the applicable fit threshold is met and required approval is given; otherwise reports gaps and stops.",
+        "Does not invent qualifications or contact the employer, and verifies and visually inspects the PDF."
+      ]
+    },
+    {
+      "id": "unavailable-job-link",
+      "prompt": "Use the cv-generator skill to tailor a resume to https://example.invalid/job from skills/cv-generator/examples/career.yaml.",
+      "criteria": [
+        "Requests the complete job description when the link cannot be read.",
+        "Does not invent job requirements or generate a tailored resume from a title alone."
+      ]
+    },
+    {
+      "id": "explicit-input-precedence",
+      "setup": "In an isolated project, create distinct valid career files at custom/career.yaml, career.yaml, and references/career.yaml.",
+      "prompt": "Use the cv-generator skill to create a CV using custom/career.yaml.",
+      "criteria": [
+        "Uses the explicitly supplied file and does not use either default."
+      ]
+    },
+    {
+      "id": "default-input-precedence",
+      "setup": "In an isolated project, create distinct valid career files at career.yaml and references/career.yaml.",
+      "prompt": "Use the cv-generator skill to create a CV.",
+      "criteria": [
+        "Uses project-root career.yaml. After removing that file, a repeated run uses project-root references/career.yaml."
+      ]
+    },
+    {
+      "id": "missing-input",
+      "setup": "In an isolated project, ensure neither default file exists.",
+      "prompt": "Use the cv-generator skill to create a CV.",
+      "criteria": [
+        "Stops before preparing or rendering a document and requests a career input path.",
+        "When an explicitly supplied path is missing, reports that path and stops even if a default exists."
+      ]
+    }
+  ]
+}

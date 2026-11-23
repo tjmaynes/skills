@@ -1,0 +1,71 @@
+# Fictional example. Replace every claim with evidence from your own career.
+name: Example Engineer
+email: example.engineer@example.test
+website: https://example.test
+social_networks:
+  - network: LinkedIn
+    username: example-engineer
+  - network: GitHub
+    username: example-engineer
+summary: Software engineer experienced in building tools for engineering teams.
+skills:
+  Engineering:
+    - Python
+    - Kubernetes
+  Delivery:
+    - Test-Driven Development
+employers:
+  example_co:
+    name: Example Co.
+    url: https://example.test
+    industry: Software
+    cv: true
+    positions:
+      - position: Senior Software Engineer
+        location: Remote
+        start_date: '2022-01'
+        end_date: present
+        responsibilities:
+          - Reviewed code and supported releases for the platform team.
+    star_stories:
+      - title: Internal service platform
+        result: Designed and delivered a service platform for internal engineering teams.
+work_projects:
+  - name: Example Platform
+    employer_id: example_co
+    start_date: '2022-01'
+    end_date: present
+    role: Technical Lead
+    role_details: Led a platform delivery team.
+    description:
+      - Designed and delivered a service platform for internal engineering teams.
+    skills:
+      - Python
+      - Kubernetes
+    team_members:
+      - Example Collaborator
+personal_projects:
+  - name: Example Open Source Tool
+    url: https://example.test/tool
+    start_date: '2024-01'
+    end_date: present
+    role: Creator
+    role_details: Maintains a small developer tool.
+    description:
+      - Built a developer tool that automates a repetitive local workflow.
+    skills:
+      - Python
+education:
+  example_university:
+    institution: Example University
+    area: Computer Science
+    degree: Bachelor of Science
+    location: Remote
+    start_date: '2010-08'
+    end_date: '2014-05'
+certifications:
+  example_certificate:
+    name: Example Certification
+    credential_id: EXAMPLE-123
+    issuer: Example Issuer
+    issued_date: '2024-01'

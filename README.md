@@ -35,6 +35,13 @@ A curated collection of structured skills that guide Claude through complex deve
 
 ## Available Skills
 
+### cv-generator
+**Use this when:** You want a general CV or a job-tailored resume based on career evidence.
+
+See [the skill guide](skills/cv-generator/SKILL.md) and its [fictional example](skills/cv-generator/examples/career.yaml).
+
+---
+
 ### agent-context-generator
 **Use this when:** A repository needs a clear `AGENTS.md` or the existing guidance is out of date.
 
@@ -127,36 +134,27 @@ Each skill file contains:
 
 ```tree
 .
-├── AGENTS.md                        # Project-wide agent guide
-├── Brewfile                         # Homebrew dependencies (stow, claude-code, codex)
-├── Justfile                         # Task runner (install, sync, unsync, status)
-├── LICENSE.txt                      # Repository license (MIT)
-├── README.md                        # This file
-├── docs/
-│   └── superpowers/
-│       └── specs/                   # Approved implementation designs
+├── AGENTS.md
+├── Brewfile
+├── Justfile
+├── LICENSE.txt
+├── README.md
 ├── scripts/
-│   ├── sync.sh                      # Deploy to ~/.agents/skills; Claude target when installed
-│   ├── unsync.sh                    # Remove deployed skills
-│   └── status.sh                    # Show current deployment status
-├── skills/
-│   ├── agent-context-generator/
-│   │   ├── LICENSE.txt
-│   │   └── SKILL.md
-│   ├── morning-paper-generator/
-│   │   ├── LICENSE.txt
-│   │   └── SKILL.md
-│   ├── otto/
-│   │   ├── agents/
-│   │   ├── LICENSE.txt
-│   │   ├── references/
-│   │   ├── scripts/
-│   │   └── SKILL.md
-│   └── superblog/
-│       ├── LICENSE.txt
-│       └── SKILL.md
-└── .claude/
-    └── settings.local.json          # Local permissions configuration
+│   ├── status.sh
+│   ├── sync.sh
+│   └── unsync.sh
+└── skills/
+    ├── agent-context-generator/
+    ├── cv-generator/
+    │   ├── SKILL.md
+    │   ├── README.md
+    │   ├── evals/
+    │   └── examples/
+    ├── resume-generator/
+    │   ├── SKILL.md
+    │   ├── references/
+    │   └── tests/
+    └── superblog/
 ```
 
 ## Adding New Skills

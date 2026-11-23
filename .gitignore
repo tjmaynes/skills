@@ -5,3 +5,10 @@
 # Generated design and implementation planning artifacts
 /docs/
 /plans/
+
+# CV generator artifacts and local Python environments
+/skills/cv-generator/build/
+/skills/cv-generator/resumes/
+__pycache__/
+*.py[cod]
+.venv/

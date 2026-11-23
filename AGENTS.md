@@ -5,7 +5,7 @@
 - **Primary languages:** Markdown, Bash
 - **Package manager:** Homebrew via `Brewfile` (`stow`, `claude-code`, `codex`)
 - **Task runner:** `just` (preferred). Deployment helpers live in `scripts/`
-- **Skill bundles:** `agent-context-generator`, `morning-paper-generator`, `otto`, `superblog`
+- **Skill bundles:** `agent-context-generator`, `cv-generator`, `resume-generator`, `superblog`
 - **Key automation:** `tree --gitignore -a -L 3` for structure snapshots, GNU stow for skill deployment
 - **CI/CD:** Not configured in-repo; rely on local validation before opening PRs
 
@@ -20,20 +20,21 @@
 │   ├── sync.sh
 │   ├── unsync.sh
 │   └── status.sh
-├── skills/               # Individual skill bundles (SKILL.md, references, scripts)
+├── skills/               # Individual skill bundles
 │   ├── agent-context-generator/
-│   ├── morning-paper-generator/
-│   ├── otto/
-│   │   ├── agents/
+│   ├── cv-generator/
+│   │   ├── evals/
+│   │   └── examples/
+│   ├── resume-generator/
 │   │   ├── references/
-│   │   └── scripts/
+│   │   └── tests/
 │   └── superblog/
 ```
 - `.git/` and other VCS artifacts omitted for clarity.
 - Skill bundles:
   - `skills/agent-context-generator/` — Generates project-level AGENTS.md context with tree snapshots and follow-up checklists.
-  - `skills/morning-paper-generator/` — Creates daily morning pages prompts and scaffolds reflective markdown entries.
-  - `skills/otto/` — Runs an end-to-end design, plan, and build workflow for agentic coding tasks.
+  - `skills/cv-generator/` - Creates general CVs and tailored resumes from career evidence.
+  - `skills/resume-generator/` - Assesses fit and creates evidence-based tailored resumes.
   - `skills/superblog/` — Generates blog posts and cross-platform social copy.
 - Regenerate this snapshot after structural changes with `tree --gitignore -a -L 3`.
 
