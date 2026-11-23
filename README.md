@@ -150,10 +150,6 @@ Each skill file contains:
     │   ├── README.md
     │   ├── evals/
     │   └── examples/
-    ├── resume-generator/
-    │   ├── SKILL.md
-    │   ├── references/
-    │   └── tests/
     └── superblog/
 ```
 

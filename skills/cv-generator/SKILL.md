@@ -123,7 +123,7 @@ locale:
 ## Tailored resumes
 
 - Obtain the complete job description and identify the company, role, requirements, and preferences. If a job URL cannot be read reliably, request pasted text; a title alone is insufficient.
-- If available, use the `resume-generator` skill for supported technical roles and follow its evidence mapping, fit assessment, ATS coverage, and artifact-approval workflow, subject to the user's existing authorization. If it is unavailable, assess fit and ATS coverage against the job description using supported evidence and report gaps. These gates do not apply to routine general CV regeneration.
+- Assess fit and ATS coverage against the job description using supported evidence and report gaps. These assessments do not apply to routine general CV regeneration.
 - Select and edit claims using source evidence. Use job keywords only where supported. Keep general CV flags and evidence independent of job-specific tailoring.
 - Propose changes to established employer, education, or certification selection rules. Exclude expired certifications by default from tailored resumes, or label them accurately when historical relevance matters; preserve source expiration dates.
 - Save approved applications as `docs/cv-generator/resumes/<short-description-company-job-role>/resume.yaml` and `resume.pdf`, using a safe descriptive slug. Preserve existing application directories unless the user explicitly requests a revision.

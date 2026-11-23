@@ -12,7 +12,7 @@ Make this directory available to your agent as a project skill, then ask it to c
 - “Use the cv-generator skill to tailor my resume to this job posting: `<URL>`.”
 - “Use the cv-generator skill with `path/to/career.yaml` to create my CV.”
 
-For a tailored resume, provide a complete job description or an accessible link. If the link cannot be read, the agent will request the text. It will assess fit against the evidence and should not invent qualifications. If an available resume-generation skill requires an approval step, its workflow also applies.
+For a tailored resume, provide a complete job description or an accessible link. If the link cannot be read, the agent will request the text. It will assess fit against the evidence and should not invent qualifications.
 
 ## Career evidence
 

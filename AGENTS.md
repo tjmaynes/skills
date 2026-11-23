@@ -5,7 +5,7 @@
 - **Primary languages:** Markdown, Bash
 - **Package manager:** Homebrew via `Brewfile` (`stow`, `claude-code`, `codex`)
 - **Task runner:** `just` (preferred). Deployment helpers live in `scripts/`
-- **Skill bundles:** `agent-context-generator`, `cv-generator`, `resume-generator`, `superblog`
+- **Skill bundles:** `agent-context-generator`, `cv-generator`, `superblog`
 - **Key automation:** `tree --gitignore -a -L 3` for structure snapshots, GNU stow for skill deployment
 - **CI/CD:** Not configured in-repo; rely on local validation before opening PRs
 
@@ -25,16 +25,12 @@
 │   ├── cv-generator/
 │   │   ├── evals/
 │   │   └── examples/
-│   ├── resume-generator/
-│   │   ├── references/
-│   │   └── tests/
 │   └── superblog/
 ```
 - `.git/` and other VCS artifacts omitted for clarity.
 - Skill bundles:
   - `skills/agent-context-generator/` — Generates project-level AGENTS.md context with tree snapshots and follow-up checklists.
   - `skills/cv-generator/` - Creates general CVs and tailored resumes from career evidence.
-  - `skills/resume-generator/` - Assesses fit and creates evidence-based tailored resumes.
   - `skills/superblog/` — Generates blog posts and cross-platform social copy.
 - Regenerate this snapshot after structural changes with `tree --gitignore -a -L 3`.
 
